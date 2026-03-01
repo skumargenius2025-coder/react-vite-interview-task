@@ -2,16 +2,20 @@ import React, { useState } from 'react';
 import HomeNavbar from './HomeNavbar';
 import Settings from './Settings';
 import Learn from './Learn';
-import Bookmarks from './Bookmarks';  // 👈 Bookmarks import
+import Bookmarks from './Bookmarks';
+import HRInterview from './HRInterview';
+import HRQuestionDetail from './HRQuestionDetail';
 import { 
   FaBook, FaMicrophone, FaBookmark, FaLightbulb, FaChartLine, 
   FaTrophy, FaArrowRight, FaSearch, FaVideo, FaLightbulb as FaIdea 
 } from 'react-icons/fa';
 
 const Home = ({ user, darkMode, toggleDarkMode, onLogout }) => {
-  const [currentPage, setCurrentPage] = useState('dashboard'); // 'dashboard', 'settings', 'learn', 'bookmarks'
-  const [bookmarks, setBookmarks] = useState([]); // 👈 Bookmarks state
+  const [currentPage, setCurrentPage] = useState('dashboard'); // 'dashboard', 'settings', 'learn', 'bookmarks', 'hr', 'tips', 'practice', 'progress', 'leaderboard'
+  const [selectedHRQuestion, setSelectedHRQuestion] = useState(null);
+  const [bookmarks, setBookmarks] = useState([]);
 
+  // Navigation Handlers
   const handleSettingsClick = () => {
     setCurrentPage('settings');
   };
@@ -24,11 +28,44 @@ const Home = ({ user, darkMode, toggleDarkMode, onLogout }) => {
     setCurrentPage('bookmarks');
   };
 
+  const handleTipsClick = () => {
+    setCurrentPage('tips');
+  };
+
+  const handlePracticeClick = () => {
+    setCurrentPage('practice');
+  };
+
+  const handleProgressClick = () => {
+    setCurrentPage('progress');
+  };
+
+  const handleLeaderboardClick = () => {
+    setCurrentPage('leaderboard');
+  };
+
+  const handleHRClick = () => {
+    setCurrentPage('hr');
+    setSelectedHRQuestion(null);
+  };
+
+  const handleHRQuestionSelect = (question) => {
+    setSelectedHRQuestion(question);
+  };
+
+  const handleBackFromHR = () => {
+    if (selectedHRQuestion) {
+      setSelectedHRQuestion(null);
+    } else {
+      setCurrentPage('learn');
+    }
+  };
+
   const handleBackToDashboard = () => {
     setCurrentPage('dashboard');
   };
 
-  // 👇 Bookmark functions
+  // Bookmark functions
   const handleBookmarkToggle = (question, isBookmarked) => {
     if (isBookmarked) {
       const newBookmark = {
@@ -90,9 +127,15 @@ const Home = ({ user, darkMode, toggleDarkMode, onLogout }) => {
         userEmail="sunil.2024@mitmeerut.ac.in"
         onLogout={onLogout}
         onSettingsClick={handleSettingsClick}
-        onBookmarksClick={handleBookmarksClick}  // 👈 Add this prop
+        onBookmarksClick={handleBookmarksClick}
+        onLearnClick={handleLearnClick}
+        onTipsClick={handleTipsClick}
+        onPracticeClick={handlePracticeClick}
+        onProgressClick={handleProgressClick}
+        onLeaderboardClick={handleLeaderboardClick}
       />
       
+      {/* Dashboard Page */}
       {currentPage === 'dashboard' && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Welcome Section */}
@@ -145,7 +188,15 @@ const Home = ({ user, darkMode, toggleDarkMode, onLogout }) => {
                   if (feature.id === 'learn') {
                     handleLearnClick();
                   } else if (feature.id === 'bookmarks') {
-                    handleBookmarksClick();  // 👈 Bookmarks click handler
+                    handleBookmarksClick();
+                  } else if (feature.id === 'tips') {
+                    handleTipsClick();
+                  } else if (feature.id === 'practice') {
+                    handlePracticeClick();
+                  } else if (feature.id === 'progress') {
+                    handleProgressClick();
+                  } else if (feature.id === 'leaderboard') {
+                    handleLeaderboardClick();
                   } else {
                     alert(`${feature.title} section coming soon!`);
                   }
@@ -222,25 +273,75 @@ const Home = ({ user, darkMode, toggleDarkMode, onLogout }) => {
         </div>
       )}
 
+      {/* Settings Page */}
       {currentPage === 'settings' && (
         <Settings user={user} onBack={handleBackToDashboard} />
       )}
 
+      {/* Learn Page */}
       {currentPage === 'learn' && (
         <Learn 
           onBack={handleBackToDashboard}
           bookmarks={bookmarks}
           onBookmarkToggle={handleBookmarkToggle}
+          onHRClick={handleHRClick}
         />
       )}
 
-      {currentPage === 'bookmarks' && (  // 👈 Bookmarks page
+      {/* HR Interview Pages */}
+      {currentPage === 'hr' && !selectedHRQuestion && (
+        <HRInterview 
+          onBack={handleBackFromHR}
+          onSelectQuestion={handleHRQuestionSelect}
+        />
+      )}
+
+      {currentPage === 'hr' && selectedHRQuestion && (
+        <HRQuestionDetail
+          question={selectedHRQuestion}
+          onBack={handleBackFromHR}
+          onBookmarkToggle={handleBookmarkToggle}
+          bookmarks={bookmarks}
+        />
+      )}
+
+      {/* Bookmarks Page */}
+      {currentPage === 'bookmarks' && (
         <Bookmarks
           bookmarks={bookmarks}
           onBack={handleBackToDashboard}
           onUpdateBookmark={handleUpdateBookmark}
           onDeleteBookmark={handleDeleteBookmark}
         />
+      )}
+
+      {/* Placeholder Pages */}
+      {currentPage === 'tips' && (
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <h1 className="text-3xl font-bold">Tips Page</h1>
+          <p className="mt-4">Coming soon...</p>
+        </div>
+      )}
+
+      {currentPage === 'practice' && (
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <h1 className="text-3xl font-bold">Practice Interview Page</h1>
+          <p className="mt-4">Coming soon...</p>
+        </div>
+      )}
+
+      {currentPage === 'progress' && (
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <h1 className="text-3xl font-bold">Progress Report Page</h1>
+          <p className="mt-4">Coming soon...</p>
+        </div>
+      )}
+
+      {currentPage === 'leaderboard' && (
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <h1 className="text-3xl font-bold">Leaderboard Page</h1>
+          <p className="mt-4">Coming soon...</p>
+        </div>
       )}
     </div>
   );

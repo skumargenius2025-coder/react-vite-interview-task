@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaSun, FaMoon, FaBars, FaTimes, FaCog, FaUserPlus, FaSignOutAlt, FaChevronDown } from 'react-icons/fa';
+import { FaSun, FaMoon, FaBars, FaTimes, FaCog, FaUserPlus, FaSignOutAlt, FaChevronDown, FaBookmark, FaBook, FaMicrophone, FaLightbulb, FaChartLine, FaTrophy } from 'react-icons/fa';
 
 const HomeNavbar = ({ 
   darkMode, 
@@ -7,35 +7,36 @@ const HomeNavbar = ({
   userName = 'sunil', 
   userEmail = 'sunil.2024@mitmeerut.ac.in', 
   onLogout,
-  onSettingsClick  // 👈 new prop
+  onSettingsClick,
+  onBookmarksClick,
+  onLearnClick,
+  onTipsClick,
+  onPracticeClick,
+  onProgressClick,
+  onLeaderboardClick
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  const scrollToSection = (sectionId) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    }
-    setIsOpen(false);
-  };
-
   const navItems = [
-    { name: 'Home', id: 'dashboard' },
-    { name: 'Learn', id: 'learn' },
-    { name: 'Practice', id: 'practice' },
-    { name: 'Bookmarks', id: 'bookmarks' },
-    { name: 'Tips', id: 'tips' },
-    { name: 'Progress', id: 'progress' },
-    { name: 'Leaderboard', id: 'leaderboard' }
+    { name: 'Home', id: 'dashboard', onClick: () => window.location.href = '/' },
+    { name: 'Learn', id: 'learn', onClick: onLearnClick, icon: <FaBook className="inline mr-1" /> },
+    { name: 'Practice', id: 'practice', onClick: onPracticeClick, icon: <FaMicrophone className="inline mr-1" /> },
+    { name: 'Bookmarks', id: 'bookmarks', onClick: onBookmarksClick, icon: <FaBookmark className="inline mr-1" /> },
+    { name: 'Tips', id: 'tips', onClick: onTipsClick, icon: <FaLightbulb className="inline mr-1" /> },
+    { name: 'Progress', id: 'progress', onClick: onProgressClick, icon: <FaChartLine className="inline mr-1" /> },
+    { name: 'Leaderboard', id: 'leaderboard', onClick: onLeaderboardClick, icon: <FaTrophy className="inline mr-1" /> }
   ];
 
   const handleSettingsClick = () => {
     setIsProfileOpen(false);
     setIsOpen(false);
-    if (onSettingsClick) {
-      onSettingsClick();
-    }
+    if (onSettingsClick) onSettingsClick();
+  };
+
+  const handleNavClick = (item) => {
+    if (item.onClick) item.onClick();
+    setIsOpen(false);
   };
 
   return (
@@ -44,7 +45,7 @@ const HomeNavbar = ({
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <button 
-            onClick={() => scrollToSection('dashboard')}
+            onClick={() => window.location.href = '/'}
             className="text-2xl font-black text-white tracking-wider hover:scale-105 transition-transform duration-300"
           >
             SelfViewAI
@@ -55,10 +56,10 @@ const HomeNavbar = ({
             {navItems.map((item) => (
               <button 
                 key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className="text-white font-semibold hover:text-gray-200 transition-all duration-300 hover:scale-110 text-sm lg:text-base"
+                onClick={() => handleNavClick(item)}
+                className="text-white font-semibold hover:text-gray-200 transition-all duration-300 hover:scale-110 text-sm lg:text-base flex items-center"
               >
-                {item.name}
+                {item.icon} {item.name}
               </button>
             ))}
             
@@ -92,7 +93,6 @@ const HomeNavbar = ({
                   </div>
                   
                   <div className="p-2">
-                    {/* Settings Button with onClick */}
                     <button 
                       onClick={handleSettingsClick}
                       className="w-full text-left px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all flex items-center gap-3"
@@ -143,13 +143,10 @@ const HomeNavbar = ({
             {navItems.map((item) => (
               <button 
                 key={item.id}
-                onClick={() => {
-                  scrollToSection(item.id);
-                  setIsOpen(false);
-                }}
-                className="block w-full text-left text-white font-semibold py-3 hover:bg-white/20 rounded-lg px-4 transition-all"
+                onClick={() => handleNavClick(item)}
+                className="block w-full text-left text-white font-semibold py-3 hover:bg-white/20 rounded-lg px-4 transition-all flex items-center"
               >
-                {item.name}
+                {item.icon} {item.name}
               </button>
             ))}
             
@@ -164,7 +161,6 @@ const HomeNavbar = ({
                 </div>
               </div>
               
-              {/* Mobile Settings Button */}
               <button 
                 onClick={handleSettingsClick}
                 className="w-full mt-2 bg-white/10 text-white font-semibold py-3 rounded-lg hover:bg-white/20 transition-all flex items-center justify-center gap-2"

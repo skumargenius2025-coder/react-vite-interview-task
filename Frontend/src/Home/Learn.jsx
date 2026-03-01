@@ -3,7 +3,7 @@ import { FaArrowLeft, FaPython, FaJava, FaJs, FaReact, FaDatabase, FaHtml5, FaCs
 import { SiMysql, SiCplusplus, SiFlutter, SiTensorflow } from 'react-icons/si';
 import QuestionDetail from './QuestionDetail';
 
-// Sample Questions Data
+// Technical Questions Data
 const questionsData = {
   Android: [
     {
@@ -68,7 +68,7 @@ const questionsData = {
   ]
 };
 
-const Learn = ({ onBack, bookmarks, onBookmarkToggle }) => {
+const Learn = ({ onBack, bookmarks, onBookmarkToggle, onHRClick }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
@@ -119,7 +119,14 @@ const Learn = ({ onBack, bookmarks, onBookmarkToggle }) => {
   };
 
   const handleCategoryClick = (categoryId) => {
-    setSelectedCategory(categoryId);
+    if (categoryId === 'hr') {
+      // HR category ke liye parent function call karo
+      if (onHRClick) {
+        onHRClick();
+      }
+    } else {
+      setSelectedCategory(categoryId);
+    }
   };
 
   const handleSubjectClick = (subject) => {
@@ -190,7 +197,7 @@ const Learn = ({ onBack, bookmarks, onBookmarkToggle }) => {
     );
   }
 
-  // Render Subjects (Technical or HR)
+  // Render Subjects (Technical only - HR direct parent mein chala jata hai)
   if (selectedCategory && !selectedSubject) {
     const filteredSubjects = subjects.filter(s => s.category === selectedCategory);
     
@@ -206,7 +213,7 @@ const Learn = ({ onBack, bookmarks, onBookmarkToggle }) => {
           </button>
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              {selectedCategory === 'technical' ? 'Technical Interview Questions' : 'HR Interview Questions'}
+              Technical Interview Questions
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mt-1">Choose a subject to start practicing</p>
           </div>
@@ -252,7 +259,7 @@ const Learn = ({ onBack, bookmarks, onBookmarkToggle }) => {
     );
   }
 
-  // Render Questions List
+  // Render Questions List (Technical)
   if (selectedSubject && !selectedQuestion) {
     const questions = getQuestionsForSubject(selectedSubject.name);
     
@@ -296,7 +303,7 @@ const Learn = ({ onBack, bookmarks, onBookmarkToggle }) => {
     );
   }
 
-  // Render Question Detail
+  // Render Question Detail (Technical)
   if (selectedQuestion) {
     return (
       <QuestionDetail
