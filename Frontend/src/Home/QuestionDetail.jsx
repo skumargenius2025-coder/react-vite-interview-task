@@ -1,29 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { FaArrowLeft, FaBookmark, FaRegBookmark, FaEdit, FaSave, FaTimes } from 'react-icons/fa';
+import { FaArrowLeft, FaBookmark, FaRegBookmark } from 'react-icons/fa';
 
 const QuestionDetail = ({ subject, question, onBack, onBookmarkToggle, bookmarks }) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedAnswer, setEditedAnswer] = useState('');
 
   useEffect(() => {
-    // Check if this specific question is bookmarked
-    const bookmarked = bookmarks?.some(b => b.id === question?.id && b.subject === subject);
+    // Check if this specific question is bookmarked - Technical ke liye
+    const bookmarked = bookmarks?.some(b => 
+      b.id === question?.id || 
+      (b.id === `tech-${question?.id}` && b.subject === subject)
+    );
     setIsBookmarked(bookmarked);
   }, [question, subject, bookmarks]);
 
   const handleBookmarkToggle = () => {
     const newBookmarkState = !isBookmarked;
     setIsBookmarked(newBookmarkState);
+    
     if (onBookmarkToggle) {
-      onBookmarkToggle({ ...question, subject }, newBookmarkState);
-    }
-  };
-
-  const handleSaveNotes = () => {
-    setIsEditing(false);
-    if (onBookmarkToggle) {
-      onBookmarkToggle({ ...question, subject, notes: editedAnswer }, true);
+      // Technical ke liye unique ID with tech- prefix
+      const bookmarkData = {
+        id: `tech-${question.id}`,
+        question: question.question,
+        answer: question.answer,
+        subject: subject,
+        originalId: question.id
+      };
+      onBookmarkToggle(bookmarkData, newBookmarkState);
     }
   };
 
@@ -55,7 +58,7 @@ const QuestionDetail = ({ subject, question, onBack, onBookmarkToggle, bookmarks
           </div>
         </div>
 
-        {/* Bookmark Button - Individual per question */}
+        {/* Bookmark Button - Only Bookmark, No Edit */}
         <button
           onClick={handleBookmarkToggle}
           className={`p-3 rounded-full transition-all ${
@@ -68,58 +71,23 @@ const QuestionDetail = ({ subject, question, onBack, onBookmarkToggle, bookmarks
         </button>
       </div>
 
-      {/* Question Card - Direct Answer Show (No Show Answer Button) */}
+      {/* Question Card - Direct Answer Show */}
       <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg mb-6">
         <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 pb-4 border-b border-gray-200 dark:border-gray-700">
           Q: {question.question}
         </h2>
         
         <div className="mt-4">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Answer:</h3>
-            {isBookmarked && (
-              <button
-                onClick={() => setIsEditing(!isEditing)}
-                className="text-gray-500 hover:text-primary transition-all flex items-center gap-1"
-              >
-                <FaEdit size={16} /> Edit
-              </button>
-            )}
-          </div>
-
-          {isEditing ? (
-            <div className="space-y-4">
-              <textarea
-                value={editedAnswer || question.answer}
-                onChange={(e) => setEditedAnswer(e.target.value)}
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:border-primary"
-                rows="8"
-              />
-              <div className="flex gap-3">
-                <button
-                  onClick={handleSaveNotes}
-                  className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
-                >
-                  <FaSave /> Save Changes
-                </button>
-                <button
-                  onClick={() => {
-                    setIsEditing(false);
-                    setEditedAnswer('');
-                  }}
-                  className="flex items-center gap-2 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
-                >
-                  <FaTimes /> Cancel
-                </button>
-              </div>
-            </div>
-          ) : (
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Answer:</h3>
+          
+          {/* Answer Box - No Edit Option */}
+          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6">
             <div className="prose dark:prose-invert max-w-none">
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line text-lg">
-                {editedAnswer || question.answer}
+                {question.answer}
               </p>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

@@ -120,7 +120,6 @@ const Learn = ({ onBack, bookmarks, onBookmarkToggle, onHRClick }) => {
 
   const handleCategoryClick = (categoryId) => {
     if (categoryId === 'hr') {
-      // HR category ke liye parent function call karo
       if (onHRClick) {
         onHRClick();
       }
@@ -159,12 +158,8 @@ const Learn = ({ onBack, bookmarks, onBookmarkToggle, onHRClick }) => {
   if (!selectedCategory) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
         <div className="flex items-center gap-4 mb-8">
-          <button
-            onClick={onBack}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all"
-          >
+          <button onClick={onBack} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full">
             <FaArrowLeft className="text-gray-600 dark:text-gray-400" />
           </button>
           <div>
@@ -173,23 +168,20 @@ const Learn = ({ onBack, bookmarks, onBookmarkToggle, onHRClick }) => {
           </div>
         </div>
 
-        {/* Categories Grid */}
         <div className="grid md:grid-cols-2 gap-6">
           {categories.map((category) => (
             <button
               key={category.id}
               onClick={() => handleCategoryClick(category.id)}
-              className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all text-left group border-2 border-transparent hover:border-primary"
+              className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl text-left group border-2 border-transparent hover:border-primary"
             >
               <div className={`w-14 h-14 ${colorMap[category.color]} rounded-xl flex items-center justify-center mb-6 text-2xl group-hover:scale-110 transition-transform`}>
                 {category.icon}
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition-colors">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary">
                 {category.title}
               </h2>
-              <p className="text-gray-600 dark:text-gray-400">
-                {category.description}
-              </p>
+              <p className="text-gray-600 dark:text-gray-400">{category.description}</p>
             </button>
           ))}
         </div>
@@ -197,18 +189,14 @@ const Learn = ({ onBack, bookmarks, onBookmarkToggle, onHRClick }) => {
     );
   }
 
-  // Render Subjects (Technical only - HR direct parent mein chala jata hai)
+  // Render Subjects
   if (selectedCategory && !selectedSubject) {
     const filteredSubjects = subjects.filter(s => s.category === selectedCategory);
     
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
         <div className="flex items-center gap-4 mb-8">
-          <button
-            onClick={handleBack}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all"
-          >
+          <button onClick={handleBack} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full">
             <FaArrowLeft className="text-gray-600 dark:text-gray-400" />
           </button>
           <div>
@@ -219,17 +207,14 @@ const Learn = ({ onBack, bookmarks, onBookmarkToggle, onHRClick }) => {
           </div>
         </div>
 
-        {/* Subjects Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filteredSubjects.map((subject, index) => (
             <button
               key={index}
               onClick={() => handleSubjectClick(subject)}
               disabled={!subject.available}
-              className={`bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all text-left group ${
-                subject.available 
-                  ? 'hover:border-primary cursor-pointer' 
-                  : 'opacity-60 cursor-not-allowed'
+              className={`bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl text-left group ${
+                subject.available ? 'hover:border-primary cursor-pointer' : 'opacity-60 cursor-not-allowed'
               } border-2 border-transparent`}
             >
               <div className="flex items-center gap-4 mb-3">
@@ -237,9 +222,7 @@ const Learn = ({ onBack, bookmarks, onBookmarkToggle, onHRClick }) => {
                   {subject.icon}
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg text-gray-900 dark:text-white">
-                    {subject.name}
-                  </h3>
+                  <h3 className="font-bold text-lg text-gray-900 dark:text-white">{subject.name}</h3>
                   {subject.available ? (
                     <p className="text-sm text-primary font-semibold">Click to practice</p>
                   ) : (
@@ -259,18 +242,14 @@ const Learn = ({ onBack, bookmarks, onBookmarkToggle, onHRClick }) => {
     );
   }
 
-  // Render Questions List (Technical)
+  // Render Questions List
   if (selectedSubject && !selectedQuestion) {
     const questions = getQuestionsForSubject(selectedSubject.name);
     
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
         <div className="flex items-center gap-4 mb-8">
-          <button
-            onClick={handleBack}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all"
-          >
+          <button onClick={handleBack} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full">
             <FaArrowLeft className="text-gray-600 dark:text-gray-400" />
           </button>
           <div>
@@ -279,13 +258,12 @@ const Learn = ({ onBack, bookmarks, onBookmarkToggle, onHRClick }) => {
           </div>
         </div>
 
-        {/* Questions List */}
         <div className="space-y-4">
           {questions.map((q, index) => (
             <button
               key={q.id}
               onClick={() => handleQuestionClick(q)}
-              className="w-full text-left bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700 hover:border-primary"
+              className="w-full text-left bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg border border-gray-100 dark:border-gray-700 hover:border-primary"
             >
               <div className="flex items-start gap-4">
                 <span className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold">
@@ -303,12 +281,18 @@ const Learn = ({ onBack, bookmarks, onBookmarkToggle, onHRClick }) => {
     );
   }
 
-  // Render Question Detail (Technical)
+  // Render Question Detail
   if (selectedQuestion) {
+    // Important: Ensure unique ID for bookmark
+    const questionWithUniqueId = {
+      ...selectedQuestion,
+      id: `tech-${selectedSubject?.name}-${selectedQuestion.id}` // tech-Python-1, tech-Java-1 etc.
+    };
+
     return (
       <QuestionDetail
         subject={selectedSubject?.name}
-        question={selectedQuestion}
+        question={questionWithUniqueId}
         onBack={handleBack}
         onBookmarkToggle={onBookmarkToggle}
         bookmarks={bookmarks}

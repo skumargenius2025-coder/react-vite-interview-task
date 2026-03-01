@@ -3,6 +3,7 @@ import HomeNavbar from './HomeNavbar';
 import Settings from './Settings';
 import Learn from './Learn';
 import Bookmarks from './Bookmarks';
+import Tips from './Tips';
 import HRInterview from './HRInterview';
 import HRQuestionDetail from './HRQuestionDetail';
 import { 
@@ -11,48 +12,23 @@ import {
 } from 'react-icons/fa';
 
 const Home = ({ user, darkMode, toggleDarkMode, onLogout }) => {
-  const [currentPage, setCurrentPage] = useState('dashboard'); // 'dashboard', 'settings', 'learn', 'bookmarks', 'hr', 'tips', 'practice', 'progress', 'leaderboard'
+  const [currentPage, setCurrentPage] = useState('dashboard');
   const [selectedHRQuestion, setSelectedHRQuestion] = useState(null);
   const [bookmarks, setBookmarks] = useState([]);
 
   // Navigation Handlers
-  const handleSettingsClick = () => {
-    setCurrentPage('settings');
-  };
-
-  const handleLearnClick = () => {
-    setCurrentPage('learn');
-  };
-
-  const handleBookmarksClick = () => {
-    setCurrentPage('bookmarks');
-  };
-
-  const handleTipsClick = () => {
-    setCurrentPage('tips');
-  };
-
-  const handlePracticeClick = () => {
-    setCurrentPage('practice');
-  };
-
-  const handleProgressClick = () => {
-    setCurrentPage('progress');
-  };
-
-  const handleLeaderboardClick = () => {
-    setCurrentPage('leaderboard');
-  };
-
+  const handleSettingsClick = () => setCurrentPage('settings');
+  const handleLearnClick = () => setCurrentPage('learn');
+  const handleBookmarksClick = () => setCurrentPage('bookmarks');
+  const handleTipsClick = () => setCurrentPage('tips');
+  const handlePracticeClick = () => setCurrentPage('practice');
+  const handleProgressClick = () => setCurrentPage('progress');
+  const handleLeaderboardClick = () => setCurrentPage('leaderboard');
   const handleHRClick = () => {
     setCurrentPage('hr');
     setSelectedHRQuestion(null);
   };
-
-  const handleHRQuestionSelect = (question) => {
-    setSelectedHRQuestion(question);
-  };
-
+  const handleHRQuestionSelect = (question) => setSelectedHRQuestion(question);
   const handleBackFromHR = () => {
     if (selectedHRQuestion) {
       setSelectedHRQuestion(null);
@@ -60,10 +36,7 @@ const Home = ({ user, darkMode, toggleDarkMode, onLogout }) => {
       setCurrentPage('learn');
     }
   };
-
-  const handleBackToDashboard = () => {
-    setCurrentPage('dashboard');
-  };
+  const handleBackToDashboard = () => setCurrentPage('dashboard');
 
   // Bookmark functions
   const handleBookmarkToggle = (question, isBookmarked) => {
@@ -133,6 +106,7 @@ const Home = ({ user, darkMode, toggleDarkMode, onLogout }) => {
         onPracticeClick={handlePracticeClick}
         onProgressClick={handleProgressClick}
         onLeaderboardClick={handleLeaderboardClick}
+        onHomeClick={handleBackToDashboard}
       />
       
       {/* Dashboard Page */}
@@ -185,21 +159,13 @@ const Home = ({ user, darkMode, toggleDarkMode, onLogout }) => {
                 key={feature.id}
                 id={feature.id}
                 onClick={() => {
-                  if (feature.id === 'learn') {
-                    handleLearnClick();
-                  } else if (feature.id === 'bookmarks') {
-                    handleBookmarksClick();
-                  } else if (feature.id === 'tips') {
-                    handleTipsClick();
-                  } else if (feature.id === 'practice') {
-                    handlePracticeClick();
-                  } else if (feature.id === 'progress') {
-                    handleProgressClick();
-                  } else if (feature.id === 'leaderboard') {
-                    handleLeaderboardClick();
-                  } else {
-                    alert(`${feature.title} section coming soon!`);
-                  }
+                  if (feature.id === 'learn') handleLearnClick();
+                  else if (feature.id === 'bookmarks') handleBookmarksClick();
+                  else if (feature.id === 'tips') handleTipsClick();
+                  else if (feature.id === 'practice') handlePracticeClick();
+                  else if (feature.id === 'progress') handleProgressClick();
+                  else if (feature.id === 'leaderboard') handleLeaderboardClick();
+                  else alert(`${feature.title} section coming soon!`);
                 }}
                 className="bg-white dark:bg-gray-800 rounded-2xl p-7 shadow-xl border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all group border-b-4 hover:border-primary animate-fadeInUp text-left active:scale-95"
                 style={{ animationDelay: `${index * 0.1}s` }}
@@ -274,9 +240,7 @@ const Home = ({ user, darkMode, toggleDarkMode, onLogout }) => {
       )}
 
       {/* Settings Page */}
-      {currentPage === 'settings' && (
-        <Settings user={user} onBack={handleBackToDashboard} />
-      )}
+      {currentPage === 'settings' && <Settings user={user} onBack={handleBackToDashboard} />}
 
       {/* Learn Page */}
       {currentPage === 'learn' && (
@@ -290,12 +254,8 @@ const Home = ({ user, darkMode, toggleDarkMode, onLogout }) => {
 
       {/* HR Interview Pages */}
       {currentPage === 'hr' && !selectedHRQuestion && (
-        <HRInterview 
-          onBack={handleBackFromHR}
-          onSelectQuestion={handleHRQuestionSelect}
-        />
+        <HRInterview onBack={handleBackFromHR} onSelectQuestion={handleHRQuestionSelect} />
       )}
-
       {currentPage === 'hr' && selectedHRQuestion && (
         <HRQuestionDetail
           question={selectedHRQuestion}
@@ -315,28 +275,22 @@ const Home = ({ user, darkMode, toggleDarkMode, onLogout }) => {
         />
       )}
 
-      {/* Placeholder Pages */}
-      {currentPage === 'tips' && (
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold">Tips Page</h1>
-          <p className="mt-4">Coming soon...</p>
-        </div>
-      )}
+      {/* Tips Page */}
+      {currentPage === 'tips' && <Tips onBack={handleBackToDashboard} />}
 
+      {/* Placeholder Pages */}
       {currentPage === 'practice' && (
         <div className="max-w-7xl mx-auto px-4 py-8">
           <h1 className="text-3xl font-bold">Practice Interview Page</h1>
           <p className="mt-4">Coming soon...</p>
         </div>
       )}
-
       {currentPage === 'progress' && (
         <div className="max-w-7xl mx-auto px-4 py-8">
           <h1 className="text-3xl font-bold">Progress Report Page</h1>
           <p className="mt-4">Coming soon...</p>
         </div>
       )}
-
       {currentPage === 'leaderboard' && (
         <div className="max-w-7xl mx-auto px-4 py-8">
           <h1 className="text-3xl font-bold">Leaderboard Page</h1>

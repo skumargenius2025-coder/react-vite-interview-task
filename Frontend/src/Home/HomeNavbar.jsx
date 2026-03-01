@@ -13,13 +13,14 @@ const HomeNavbar = ({
   onTipsClick,
   onPracticeClick,
   onProgressClick,
-  onLeaderboardClick
+  onLeaderboardClick,
+  onHomeClick
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const navItems = [
-    { name: 'Home', id: 'dashboard', onClick: () => window.location.href = '/' },
+    { name: 'Home', id: 'home', onClick: onHomeClick, icon: null },
     { name: 'Learn', id: 'learn', onClick: onLearnClick, icon: <FaBook className="inline mr-1" /> },
     { name: 'Practice', id: 'practice', onClick: onPracticeClick, icon: <FaMicrophone className="inline mr-1" /> },
     { name: 'Bookmarks', id: 'bookmarks', onClick: onBookmarksClick, icon: <FaBookmark className="inline mr-1" /> },
@@ -45,7 +46,7 @@ const HomeNavbar = ({
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <button 
-            onClick={() => window.location.href = '/'}
+            onClick={onHomeClick}
             className="text-2xl font-black text-white tracking-wider hover:scale-105 transition-transform duration-300"
           >
             SelfViewAI
