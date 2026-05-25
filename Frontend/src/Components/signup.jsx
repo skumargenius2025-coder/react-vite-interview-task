@@ -79,7 +79,7 @@ const Signup = ({ onClose, onSwitchToLogin, onSignupSuccess }) => {
                 value={formData.firstName}
                 onChange={handleChange}
                 className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-primary"
-                placeholder="John"
+                placeholder="enter name"
                 required
               />
             </div>
@@ -91,7 +91,7 @@ const Signup = ({ onClose, onSwitchToLogin, onSignupSuccess }) => {
                 value={formData.lastName}
                 onChange={handleChange}
                 className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-primary"
-                placeholder="Doe"
+                placeholder="last name"
                 required
               />
             </div>
@@ -105,7 +105,7 @@ const Signup = ({ onClose, onSwitchToLogin, onSignupSuccess }) => {
               value={formData.email}
               onChange={handleChange}
               className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-primary"
-              placeholder="john@example.com"
+              placeholder="enter your email"
               required
             />
           </div>

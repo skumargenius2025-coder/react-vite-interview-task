@@ -4,8 +4,11 @@ import Settings from './Settings';
 import Learn from './Learn';
 import Bookmarks from './Bookmarks';
 import Tips from './Tips';
+import Progress from './Progress';
+import Leaderboard from './Leaderboard';
 import HRInterview from './HRInterview';
 import HRQuestionDetail from './HRQuestionDetail';
+import Practice from './Practice'; // 👈 YEH SAHI HAI - same folder mein Practice.jsx
 import { 
   FaBook, FaMicrophone, FaBookmark, FaLightbulb, FaChartLine, 
   FaTrophy, FaArrowRight, FaSearch, FaVideo, FaLightbulb as FaIdea 
@@ -214,14 +217,14 @@ const Home = ({ user, darkMode, toggleDarkMode, onLogout }) => {
               </div>
               <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
                 <button
-                  onClick={() => alert('Starting practice session...')}
+                  onClick={handlePracticeClick}
                   className="bg-white text-primary font-black px-10 py-4 rounded-xl hover:shadow-xl transition-all flex items-center justify-center gap-2 active:scale-95"
                 >
                   Start Practice
                   <FaArrowRight />
                 </button>
                 <button
-                  onClick={() => alert('Opening question bank...')}
+                  onClick={handleLearnClick}
                   className="bg-white/10 border border-white/20 text-white font-bold px-10 py-4 rounded-xl hover:bg-white/20 transition-all backdrop-blur-sm"
                 >
                   Browse Questions
@@ -278,25 +281,14 @@ const Home = ({ user, darkMode, toggleDarkMode, onLogout }) => {
       {/* Tips Page */}
       {currentPage === 'tips' && <Tips onBack={handleBackToDashboard} />}
 
-      {/* Placeholder Pages */}
-      {currentPage === 'practice' && (
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold">Practice Interview Page</h1>
-          <p className="mt-4">Coming soon...</p>
-        </div>
-      )}
-      {currentPage === 'progress' && (
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold">Progress Report Page</h1>
-          <p className="mt-4">Coming soon...</p>
-        </div>
-      )}
-      {currentPage === 'leaderboard' && (
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold">Leaderboard Page</h1>
-          <p className="mt-4">Coming soon...</p>
-        </div>
-      )}
+      {/* Progress Page */}
+      {currentPage === 'progress' && <Progress onBack={handleBackToDashboard} />}
+
+      {/* Leaderboard Page */}
+      {currentPage === 'leaderboard' && <Leaderboard onBack={handleBackToDashboard} />}
+
+      {/* Practice Page */}
+      {currentPage === 'practice' && <Practice onBack={handleBackToDashboard} />}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaSun, FaMoon, FaBars, FaTimes } from 'react-icons/fa';
 
-const Navbar = ({ darkMode, toggleDarkMode, onLoginClick, isLoggedIn, userName = 'sunil' }) => {
+const Navbar = ({ darkMode, toggleDarkMode, onLoginClick, isLoggedIn, userName = 'SelfView' }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
